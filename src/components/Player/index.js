@@ -32,6 +32,7 @@ const Player = ({
   setPosition,
   positionShown,
   progress,
+  setVolume,
 }) => (
   <Container>
     {!!player.currentSong && (
@@ -41,6 +42,7 @@ const Player = ({
         onFinishedPlaying={next}
         onPlaying={playing}
         position={player.position}
+        volume={player.volume}
       />
     )}
     <Current>
@@ -87,7 +89,10 @@ const Player = ({
             railStyle={{ background: '#404040', borderRadius: 10 }}
             trackStyle={{ background: '#1ED760' }}
             handleStyle={{ border: 0 }}
-            // value={100}
+            max={1000}
+            onChange={value => handlePosition(value / 1000)}
+            onAfterChange={value => setPosition(value / 1000)}
+            value={progress}
           />
         </ProgressSlider>
         <span>{duration}</span>
@@ -100,10 +105,8 @@ const Player = ({
         railStyle={{ background: '#404040', borderRadius: 10 }}
         trackStyle={{ background: '#FFF' }}
         handleStyle={{ display: 'none' }}
-        max={1000}
-        onChange={value => handlePosition(value / 1000)}
-        onAfterChange={value => setPosition(value / 1000)}
-        value={progress}
+        value={player.volume}
+        onChange={setVolume}
       />
     </Volume>
   </Container>
@@ -130,6 +133,7 @@ Player.propTypes = {
   handlePosition: PropTypes.func.isRequired,
   setPosition: PropTypes.func.isRequired,
   progress: PropTypes.number.isRequired,
+  setVolume: PropTypes.func.isRequired,
 };
 
 function msToTime(duration) {
